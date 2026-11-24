@@ -35,7 +35,7 @@ public class Conexion2 {
     public int conectar(String servidor, String base, String usuario, String clave) {
         try {
             String url = "jdbc:mysql://" + servidor + ":3306/" + base + "?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
-            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+            Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection(url, usuario, clave);
             return 1;
         } catch (Exception e) {
@@ -75,14 +75,14 @@ public class Conexion2 {
 
                 if (valor == null) {
                     cs.setNull(indiceJdbc, Types.NULL);
-                } else if (valor instanceof byte[] bytes) {
-                    cs.setBytes(indiceJdbc, bytes);
-                } else if (valor instanceof InputStream stream) {
-                    cs.setBinaryStream(indiceJdbc, stream);
-                } else if (valor instanceof LocalDate fecha) {
-                    cs.setDate(indiceJdbc, java.sql.Date.valueOf(fecha));
-                } else if (valor instanceof LocalDateTime fechaHora) {
-                    cs.setTimestamp(indiceJdbc, java.sql.Timestamp.valueOf(fechaHora));
+                } else if (valor instanceof byte[]) {
+                    cs.setBytes(indiceJdbc, (byte[]) valor);
+                } else if (valor instanceof InputStream) {
+                    cs.setBinaryStream(indiceJdbc, (InputStream) valor);
+                } else if (valor instanceof LocalDate) {
+                    cs.setDate(indiceJdbc, java.sql.Date.valueOf((LocalDate) valor));
+                } else if (valor instanceof LocalDateTime) {
+                    cs.setTimestamp(indiceJdbc, java.sql.Timestamp.valueOf((LocalDateTime) valor));
                 } else {
                     cs.setObject(indiceJdbc, valor);
                 }
